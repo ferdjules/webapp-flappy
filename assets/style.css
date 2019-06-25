@@ -1,0 +1,32 @@
+h1 {
+  color: red;
+  font-size: 30px;
+  font-style: italic;
+  font-family: Montserrat;
+}
+
+.score {
+  color: red;
+}
+
+#gameLink {
+  text-align: center;
+  border: 1px solid gray;
+}
+
+#greeting {
+  display: none;
+  position: absolute;
+  left: 40%;
+  top: 40%;
+  background: #fff;
+  width: 350px;
+  border: 2px solid gray;
+  border-radius: 5px;
+  padding: 20px;
+}
+
+.active
+{
+    background-color:yellow;
+}
