@@ -44,6 +44,36 @@ var stars = [];
 // array that holds the batmen
 var batmen = [];
 
+// array that holds the letters
+var letters = [];
+
+// array that holds the letters' position
+var lettersPosition = [];
+
+// variable that holds the current letter
+var newLetter;
+
+// array that holds all caught letters
+var collectedLetters = new Array(11).fill(0);
+
+// Flappy Bird set
+var FBtext;
+
+//Initially empty array to store the bullets
+var bullets = [];
+
+// array that holds ammunition
+var ammo = [];
+
+// Initialise the activeGun variable with the boolean value false.
+var activeGun = false;
+
+// ammoWidth
+var ammoWidth = 20;
+
+// Initialise bulletCounter with the value 0
+var bulletCounter = 0;
+
 // splash screen
 var splashDisplay;
 
@@ -77,6 +107,12 @@ var modes = {
   normal: normalMode
 };
 
+// orb sprite
+var orb;
+
+// speed of vertical movement of pipes
+var pipeVerticalSpeed = 50;
+
 // score board
 jQuery("#greeting-form").on("submit", function(event_details) {
   var greeting = "Hello ";
@@ -95,7 +131,7 @@ jQuery("#greeting-form").on("submit", function(event_details) {
  */
 function preload() {
     // load James Bond images
-    game.load.image("playerImg", "../assets/jamesBond.gif");
+    //game.load.image("playerImg", "../assets/jamesBond.gif");
     // load sound snippet
     game.load.audio("score", "../assets/point.ogg");
     // load pipe block
@@ -114,6 +150,29 @@ function preload() {
     game.load.image("Easy", "../assets/easy.png");
     // load the normal image
     game.load.image("Normal", "../assets/normal.png");
+
+    // load letters
+    game.load.image("letterF","../assets/letters/F.png");
+    game.load.image("letterL","../assets/letters/L.png");
+    game.load.image("letterA","../assets/letters/A.png");
+    game.load.image("letterP","../assets/letters/P.png");
+    game.load.image("letterY","../assets/letters/Y.png");
+    game.load.image("letterB","../assets/letters/B.png");
+    game.load.image("letterI","../assets/letters/I.png");
+    game.load.image("letterR","../assets/letters/R.png");
+    game.load.image("letterD","../assets/letters/D.png");
+
+    // load bullet
+    game.load.image("bullet", "../assets/flappy_frog.png");
+    // load bonus bullet to load ammunition
+    game.load.image("bonus", "../assets/flappy_frog.png");
+
+    // mummy for animated sprite
+    game.load.spritesheet("playerImg", "../assets/mummy.png", 37, 45, 18);
+
+
+    // orb
+    game.load.image("orb", "../assets/pipe_red.png");
 }
 
 
@@ -124,7 +183,8 @@ function create() {
     // set the background colour of the scene
     game.stage.setBackgroundColor("#13D3A3");
     // set and position the welcome text
-    game.add.text(20, 20, "Welcome to my game", {font: "20px Arial", fill: "#FFFFFF"});
+    //game.add.text(20, 20, "Welcome to my game", {font: "20px Arial", fill: "#FFFFFF"});
+
     // place image on canvas
     // game.add.sprite(10, 270, "playerImg");
 
@@ -157,13 +217,13 @@ function create() {
     //player.body.velocity.y = -100;
 
     // moves player to right
-    game.input.keyboard.addKey(Phaser.Keyboard.RIGHT).onDown.add(moveRight);
+    // game.input.keyboard.addKey(Phaser.Keyboard.RIGHT).onDown.add(moveRight);
     // moves player to left
-    game.input.keyboard.addKey(Phaser.Keyboard.LEFT).onDown.add(moveLeft);
+    // game.input.keyboard.addKey(Phaser.Keyboard.LEFT).onDown.add(moveLeft);
     // moves player up
-    game.input.keyboard.addKey(Phaser.Keyboard.UP).onDown.add(moveUp);
+    // game.input.keyboard.addKey(Phaser.Keyboard.UP).onDown.add(moveUp);
     // moves player down
-    game.input.keyboard.addKey(Phaser.Keyboard.DOWN).onDown.add(moveDown);
+    // game.input.keyboard.addKey(Phaser.Keyboard.DOWN).onDown.add(moveDown);
     // // moves player according to jump function
     // game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR).onDown.add(playerJump);
 
@@ -190,6 +250,24 @@ function create() {
     splashDisplay = game.add.text(100,200, "Press ENTER to start, SPACEBAR to jump");
     game.input.keyboard.addKey(Phaser.Keyboard.ENTER).onDown.add(start);
 
+    FBtext = game.add.text(20, 350, "Flappy Bird",
+            {font: "40px Arial", fill: "#4d79ff",fontWeight: "bold"});
+
+    // call the fire function when the right arrow key is pressed
+    game.input.keyboard.addKey(Phaser.Keyboard.RIGHT).onDown.add(fire);
+
+    // create animation with player image
+    var walk = player.animations.add('walk');
+    player.animations.play('walk', 30, true);
+
+    // add another sprite to interact with
+    orb = game.add.sprite(width/2, height/4, 'orb');
+    //orb = game.add.sprite(80, 150, 'orb');
+    game.physics.enable(orb, Phaser.Physics.ARCADE);
+    orb.body.collideWorldBounds = true;
+    orb.body.bounce.setTo(0.8, 0.8, 0.8, 0.8);
+    orb.body.velocity.x = 100;
+    orb.body.velocity.y = 50;
 }
 
 function start() {
@@ -205,6 +283,10 @@ function start() {
     // time loop to keep generating new pipes
     // var pipeInterval = 1.75 * Phaser.Timer.SECOND;
     // game.time.events.loop(pipeInterval,generate);
+
+    // introduce letters
+    var lettersInterval = 3.5;
+    game.time.events.loop(lettersInterval * Phaser.Timer.SECOND,generateLetters);
 
     // destroy splash screen
     splashDisplay.destroy();
@@ -241,7 +323,7 @@ function update() {
 
     // checks if player leaves the canvas
     if(player.body.y < 0 || player.body.y > height) {
-      gameOver();
+        gameOver();
     }
 
     // rotates player around itself
@@ -293,12 +375,41 @@ function update() {
         game.time.events.loop(pipeInterval * Phaser.Timer.SECOND, generate);
     });
 
-    game.physics.arcade.overlap(player,easyTag, function(){
-        easyTag.destroy();
+    game.physics.arcade.overlap(player,normalTag, function(){
         normalTag.destroy();
+        easyTag.destroy();
         setMode(modes.easy);
         game.time.events.loop(pipeInterval * Phaser.Timer.SECOND, generate);
     });
+
+    // for each letter in the game canvas
+    for (var i = 0; i < letters.length; i++) {
+        // check if there is any overlaps
+        if(game.physics.arcade.overlap(player,letters[i])){
+            // if there is an overlap, update the score
+            updateScore();
+            //add the position of the new collected letter in the collectedLetters array
+            collectedLetters[lettersPosition[i]] = 1;
+            // remove the letter i from the game canvas
+            letters[i].destroy();
+            // remove the letter i from the array letters
+            letters.splice(i,1);
+            // remove the position of letter i from the lettersPosition array
+            lettersPosition.splice(i,1);
+            // updates the colour of respective letter
+            updateColour();
+        }
+    }
+
+    // For each pipe test the overlap with bullets and destroy any match
+    for (var i = 0; i < pipes.length; i++) {
+        game.physics.arcade.overlap(pipes[i], bullets, function() {
+            pipes[i].destroy();
+        });
+    }
+
+    //Sets the variable to true when the player and the bonus collide.
+    checkAmmunition();
 
 }
 
@@ -346,23 +457,23 @@ function moveUp () {
 
 // Unaligned pipe generation function
 function generatePipe() {
-  var gapStart = game.rnd.integerInRange(gapMargin, height - gapSize - gapMargin);
+    var gapStart = game.rnd.integerInRange(gapMargin, height - gapSize - gapMargin);
 
-  // Pipes coming from the top
-  addPipeEnd(width - (pipeEndExtraWidth/2),gapStart-25);
-  for (var y = gapStart - pipeEndHeight; y > 0; y -= blockHeight) {
-    addPipeBlock(width, y - blockHeight);
-  }
+    // Pipes coming from the top
+    addPipeEnd(width - (pipeEndExtraWidth/2),gapStart-25);
+    for (var y = gapStart - pipeEndHeight; y > 0; y -= blockHeight) {
+      addPipeBlock(width, y - blockHeight);
+    }
 
-  addStar(width, (2*gapStart-25+gapSize)/2);
+    addStar(width, (2*gapStart-25+gapSize)/2);
 
-  // Pipes coming from the bottom (pipeGap)
-  addPipeEnd(width - (pipeEndExtraWidth/2),gapStart+gapSize);
-  for (var y = gapStart + gapSize + pipeEndHeight; y < height; y += blockHeight) {
-    addPipeBlock(width, y);
-  }
+    // Pipes coming from the bottom (pipeGap)
+    addPipeEnd(width - (pipeEndExtraWidth/2),gapStart+gapSize);
+    for (var y = gapStart + gapSize + pipeEndHeight; y < height; y += blockHeight) {
+      addPipeBlock(width, y);
+    }
 
-  //changeScore();
+    //changeScore();
 }
 
 function addPipeBlock(x, y) {
@@ -374,6 +485,21 @@ function addPipeBlock(x, y) {
     game.physics.arcade.enable(block);
     // defines velocity of pipes
     block.body.velocity.x = -gameSpeed;
+    // defines vertical speed of pipes
+    block.body.velocity.y = pipeVerticalSpeed;
+
+    // random velocitiy of pipe blocks
+    //var blockVelocity = game.rnd.integerInRange(-200, -400);
+    //block.body.velocity.x = blockVelocity;
+
+    //new things here
+    var flagDestroy = game.rnd.integerInRange(0, 5);
+    if (flagDestroy == 0) {
+        var destroyTime = game.rnd.integerInRange(500, 1000);
+        game.time.events.add(destroyTime, function() {
+            block.destroy();
+            }, this);
+    }
 }
 
 function addPipeEnd(x,y) {
@@ -385,6 +511,8 @@ function addPipeEnd(x,y) {
     game.physics.arcade.enable(endBlock);
     // defines velocity of pipes
     endBlock.body.velocity.x = -gameSpeed;
+    // defines vertical speed of pipe ending
+    endBlock.body.velocity.y = pipeVerticalSpeed;
 
 }
 
@@ -445,14 +573,30 @@ function generateWeights(){
 
 
 // Function that creates bonuses or pipes at random
+// function generate() {
+//     var diceRoll = game.rnd.integerInRange(1, 10);
+//     if(diceRoll==1) {
+//         generateBalloons();
+//     } else if(diceRoll==2) {
+//         generateWeights();
+//     } else {
+//         generatePipe();
+//     }
+// }
+
+// Function that creates bonuses or pipes at random
 function generate() {
     var diceRoll = game.rnd.integerInRange(1, 10);
     if(diceRoll==1) {
         generateBalloons();
     } else if(diceRoll==2) {
         generateWeights();
+    } else if(diceRoll==3) {
+        generateAmmo();
+        //generatePipe();
     } else {
         generatePipe();
+        //generateAmmo();
     }
 }
 
@@ -461,7 +605,10 @@ function addStar(x,y) {
     var star = game.add.sprite(x, y, "stars");
     stars.push(star);
     game.physics.arcade.enable(star);
+    // defines horizontal speed of pipes
     star.body.velocity.x = -gameSpeed;
+    // defines vertical speed of star
+    star.body.velocity.y = pipeVerticalSpeed;
 }
 
 // Function that increases the speed of the game
@@ -509,4 +656,193 @@ function setMode(mode) {
     gameSpeed = mode.gameSpeed;
     gameGravity = mode.gameGravity;
     gapSize = mode.gapSize;
+}
+
+
+// Generate floating letters
+function generateLetters() {
+    // pick a new random letter
+    pickLetter();
+    //display on the canvas one of the letters
+    // for now let's display the first one
+    var letter = game.add.sprite(750,20,newLetter);
+    //we need to scale it to the right size
+    letter.scale.y = 0.5;
+    letter.scale.x = 0.5;
+    // insert it in the array letters
+    letters.push(letter);
+    // enable physics engine for the letter
+    game.physics.arcade.enable(letter);
+    // set the letters's velocity
+    // (negative x value for velocity means movement will be towards left)
+    letter.body.velocity.x = -80;
+    letter.body.velocity.y = 20;
+}
+
+
+function pickLetter() {
+    // generate random numbers corresponding to the position of letters in the
+    // "Flappy Bird" array containing 10 letters - from 0 to 9 excluding the space
+    var diceRoll = game.rnd.integerInRange(0, 9);
+    switch (diceRoll) {
+    case 0:
+    newLetter = "letterF";
+    lettersPosition.push(0);
+    break;
+
+    case 1:
+    newLetter = "letterL";
+    lettersPosition.push(1);
+    break;
+
+    case 2:
+    newLetter = "letterA";
+    lettersPosition.push(2);
+    break;
+
+    case 3:
+    newLetter = "letterP";
+    lettersPosition.push(3);
+    break;
+
+    case 4:
+    newLetter = "letterP";
+    lettersPosition.push(4);
+    break;
+
+    case 5:
+    newLetter = "letterY";
+    lettersPosition.push(5);
+    break;
+
+    case 6:
+    newLetter = "letterB";
+    // the position of letter B is 7 because of the space
+    //between the word "Flappy" and "Bird"
+    lettersPosition.push(7);
+    break;
+
+    case 7:
+    newLetter = "letterI";
+    lettersPosition.push(8);
+    break;
+
+    case 8:
+    newLetter = "letterR";
+    lettersPosition.push(9);
+    break;
+
+    case 9:
+    newLetter = "letterD";
+    lettersPosition.push(10);
+    break;
+    }
+}
+
+// Function that updates score by 2
+function updateScore() {
+    changeScore();
+    changeScore();
+}
+
+// Function that changes the colour of the letters
+function updateColour() {
+    // for each letter in the array of the collected letters
+    for (i = 0; i < collectedLetters.length; i++) {
+        // if the letter i has been collected, turn it into red
+        if (collectedLetters[i] == 1) {
+            //FBtext.addColor('#ff0000', i); //#ff0000 is red
+            FBtext.angle -= 10;
+        }
+        // if the letter i has not been collected turn it into white
+        if (collectedLetters[i] == 0) {
+            //FBtext.addColor('#4d79ff', i); //#4d79ff is blue
+            FBtext.angle -= 10;
+        }
+    }
+}
+
+// Function that fires the bullets
+function fire() {
+    // Increases the value of bulletCounter by one.
+    bulletCounter++;
+
+    if (bulletCounter == 5) {
+        bulletCounter = 0;
+        activeGun = false;
+    }
+
+    if (activeGun) {
+        // The initial position of the bullet is the current position of the player.
+        var bullet = game.add.sprite(player.x, player.y, "bullet");
+        game.physics.arcade.enable(bullet);
+        bullet.body.velocity.x = 400;
+        // Add the new bullet to the bullets array, (this is helpful for //later)
+        bullets.push(bullet);
+    }
+}
+
+
+// Function that generates ammunition
+function generateAmmo() {
+    var ammunition = game.add.sprite(width, 0, "bonus");
+    game.physics.arcade.enable(ammunition);
+    ammunition.body.velocity.x = -200;
+    ammunition.body.velocity.y = game.rnd.integerInRange(60, 100);
+    ammo.push(ammunition);
+}
+
+
+function checkAmmunition() {
+    for(var i = ammo.length - 1; i >= 0; i--) {
+        if(ammo[i].body.x + ammoWidth < 0) {
+            ammo[i].destroy();
+            ammo.splice(i, 1);
+        } else {
+            game.physics.arcade.overlap(player, ammo[i], function(){
+                ammo[i].destroy();
+                ammo.splice(i, 1);
+                bulletCounter=0;
+                activeGun = true;
+            });
+        }
+    }
+}
+
+
+// Generate changes to the game environment once the player collides with the orb sprite.
+function collisionHandler() {
+    game.stage.setBackgroundColor = '#992d2d';
+    generateHardPipe();
+    orb.kill();
+}
+
+// Function that generates a "hard pipe"
+function generateHardPipe() {
+    var gapStart = game.rnd.integerInRange(2, 5);
+    for (var count = 0; count < height/blockHeight; count++) {
+        if (count != gapStart && count != gapStart+1) {
+            addHardPipeBlock(width, count * 50);
+        }
+    }
+        ultimateMode();
+}
+
+
+function addHardPipeBlock(x, y) {
+    var block = game.add.sprite(x,y,"pipeBlock");
+    pipes.push(block);
+    game.physics.arcade.enable(block);
+    block.body.velocity.x = -500;
+}
+
+
+function ultimateMode() {
+    score = score + 100;
+    labelScore.setText(score.toString());
+    game.time
+    .events
+    .loop(pipeInterval * Phaser.Timer.SECOND, generateHardPipe);
+        var text = game.add.text(220, 50, 'Ultimate Mode!',{font: "30px Tahoma", fill:"#b30047"});
+        text.setShadow(3, 3, 'rgba(0,0,0,0.5)', 5);
 }
