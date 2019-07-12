@@ -1,0 +1,27 @@
+h1 {
+  color: red;
+  font-style: bold;
+  font-family: fantasy;
+}
+
+.first {
+  color: red;
+}
+
+.firstH2 {
+  color: blue;
+}
+
+
+.second {
+  color: rgb(75, 180, 115);
+}
+
+.secondButton {
+  color: red;
+}
+
+#gameLink {
+  text-align: center;
+  border: 1px solid gray;
+}

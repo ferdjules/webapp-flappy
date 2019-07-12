@@ -1,9 +1,9 @@
-// jQuery("#credits").on("click", function() {
-//   var message = "Game created by Julian!";
-//   jQuery("#credits").append(
-//     "<p>" + message + "</p>"
-//   );
-// });
+jQuery(".credits").on("click", function() {
+   var message = "Game created by Julian!";
+    jQuery(".credits").append(
+      "<p>" + message + "</p>"
+    );
+ });
 
 jQuery("#scoresbtn").on("click", function() {
   jQuery("#content").empty();
@@ -45,7 +45,11 @@ jQuery("#helpbtn").on("click", function() {
 
 function registerScore(score) {
    var playerName = prompt("What's your name?");
-   var scoreEntry = "<li>" + playerName + ":" + score.toString() + "</li>";
+   var scoreEntry = "<li>" + playerName + ": " + score.toString() + "</li>";
+   if (score > bestScore ) {
+     bestScore = score;
+     $("#scores").append(scoreEntry);
+   }
 }
 
 jQuery("#sharing").on("click", function(){

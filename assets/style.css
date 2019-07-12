@@ -2,12 +2,9 @@ h1 {
   color: red;
   font-size: 30px;
   font-style: italic;
-  font-family: Montserrat;
+  font-family: Arial;
 }
 
-.score {
-  color: red;
-}
 
 #gameLink {
   text-align: center;
