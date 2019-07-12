@@ -13,7 +13,7 @@ if (!Date.now) {
   };
 }
 
-var name = " ";
+var name = "ferdjules";
 var email = "ucabjvo@ucl.ac.uk";
 
 console.log("Configuring git");

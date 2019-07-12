@@ -9,23 +9,53 @@
 
   <body>
     <div class="container">
+
       <div class="jumbotron">
         <h1>Flappy Bird!</h1>
         <p>Welcome to Flappy Bird!</p>
       </div>
 
       <div class="row">
-        <div class="col-md-9">
-            <div id="game"></div>
-        </div>
-        <div class="col-md-3">
-          <p>How to play:</p>
+        <div id="game"></div>
+      </div>
 
-          <ul>
-            <li class="gold" id="first">Press SPACE to flap your wings.</li>
-            <li class="score" id="second">Avoid the pipes.</li>
-            <li class="score" id="third">If you crash, just try again.</li>
-          </ul>
+      <div class="row">
+        <p>How to play:</p>
+        <ul>
+          <li class="gold" id="first">Press SPACE to flap your wings.</li>
+          <li class="score" id="second">Avoid the pipes.</li>
+          <li class="score" id="third">If you crash, just try again.</li>
+        </ul>
+      </div>
+
+      <!-- <div class="row">
+        <button type="button" class="btn btn-default" id="scoresbtn">Scores</button>
+        <button type="button" class="btn btn-default" id="creditsbtn">Credits</button>
+        <button type="button" class="btn btn-default" id="helpbtn">Help</button>
+      </div> -->
+
+      <div>
+        <ul class="nav nav-pills">
+          <!-- <li class="nav-item">
+            <a class="nav-link active" id="scoresbtn">Scores</a>
+          </li> -->
+          <li class="nav-item">
+            <a class="nav-link" id="creditsbtn">Credits</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" id="helpbtn">Help</a>
+          </li>
+        </ul>
+      </div>
+
+      <div>
+        <div id="content">
+        </div>
+      </div>
+
+      <div class="row">
+        <p>Scores:</p>
+        <div id="scores">
         </div>
       </div>
 
@@ -45,6 +75,8 @@
 
     <script type="text/javascript" src="../lib/phaser.min.js"></script>
     <script type="text/javascript" src="../js/flappy.js"></script>
+    <script type="text/javascript" src="../lib/jquery.js"></script>
+    <script type="text/javascript" src="../js/interactivity.js"></script>
 
   </body>
 </html>

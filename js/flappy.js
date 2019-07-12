@@ -35,6 +35,8 @@ var game_playing = false;
 
 // stores the current score
 var score = 0;
+// best score in list
+var bestscore = 0;
 // the interval (fraction of a second) at which the score is updated
 var score_update_interval = 10;
 // stores the distance that has been travelled by pipes
@@ -346,4 +348,7 @@ function game_over() {
     } else {
         label_reset.visible = true;
     }
+
+    registerScore(score);
+
 }
