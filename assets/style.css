@@ -1,14 +1,34 @@
-h1 {
+/* h1 {
   color: red;
   font-size: 30px;
   font-style: italic;
   font-family: Arial;
+} */
+
+#h {
+  color: red;
 }
+
+
+.gold {
+  color: green;
+}
+
+/* li:hover {
+  color: blue;
+} */
 
 
 #gameLink {
   text-align: center;
   border: 1px solid gray;
+}
+
+#game {
+  margin: 20px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 800px;
 }
 
 #greeting {
@@ -23,7 +43,6 @@ h1 {
   padding: 20px;
 }
 
-.active
-{
-    background-color:red;
+.active {
+    background-color: yellow;
 }

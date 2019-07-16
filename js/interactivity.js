@@ -1,60 +1,41 @@
-jQuery("#credits").on("mouseleave", function() {
-    var message = "Hello Julian";
-    jQuery("#credits").append("<p>" + message + "</p>");
-});
-
-jQuery("#scoresbtn").on("click", function() {
-  jQuery("#content").empty();
-  jQuery("#content").append(
-    "<ul>" +
-      "<li>" + "Me" + "</li>" +
-      "<li>" + "Also me" + "</li>" +
-      "<li>" + "Me again" + "</li>" +
-    "</ul>"
+jQuery('#scoresbtn').on('click', function() {
+  jQuery('#content').empty();
+  jQuery('#content').append(
+    '<p>'+'Scores'+'</p>'
   );
-  jQuery("#scoresbtn").addClass("active");
-  jQuery("#creditsbtn").removeClass("active");
-  jQuery("#helpbtn").removeClass("active");
+  jQuery('#scoresbtn').addClass('active');
 });
 
-jQuery("#creditsbtn").on("click", function() {
-  jQuery("#content").empty();
-  jQuery("#content").append(
-    "<div>" + "Game created by Bob!" + "</div>"
-  );
-  jQuery("#scoresbtn").removeClass("active");
-  jQuery("#creditsbtn").addClass("active");
-  jQuery("#helpbtn").removeClass("active");
+jQuery('#creditsbtn').on('click', function() {
+  jQuery('#content').empty();
+  jQuery('#content').append(
+    '<p>'+'Credits'+'</p>'
+  )
 });
 
-jQuery("#helpbtn").on("click", function() {
-  jQuery("#content").empty();
-  jQuery("#content").append(
-    "<ul>"
-      + "<li>" + "Press SPACE to flap your wings" + "</li>"
-      + "<li>" + "Avoid the incoming pipes" + "</li>"
-      + "<li>" + "If you crash, just try again!" + "</li>"
-    + "</ul>"
-  );
-  jQuery("#scoresbtn").removeClass("active");
-  jQuery("#creditsbtn").removeClass("active");
-  jQuery("#helpbtn").addClass("active");
+jQuery('#helpbtn').on('click', function() {
+  jQuery('#content').empty();
+  jQuery('#content').append(
+    '<p>'+'Help'+'</p>'
+  )
 });
 
 
-function registerScore(score) {
-   var playerName = prompt("What's your name?");
-   var scoreEntry = "<li>" + playerName + ": " + score.toString() + "</li>";
-   //$("#scores").append(scoreEntry);
-   if (score > bestscore ) {
-      bestscore = score;
-      $("#scores").append(scoreEntry);
-   }
-}
 
-jQuery("#sharing").on("click", function(){
-  var text = "I scored " + score.toString() + " in Flappy Birdy! Can you do better?";
-  var escapedText = encodeURIComponent(text);
-  var url = "https:twitter.com/share?text=" + escapedText
-  jQuery("#sharing").attr("href", url);
-});
+
+
+
+
+
+
+
+
+
+
+
+// jQuery("#credits").on("mouseleave", function() {
+//   var message = "This game was created by guys and girls!";
+//   jQuery("#credits").append(
+//     '<p>'+message+'</p>'
+//   )
+// });

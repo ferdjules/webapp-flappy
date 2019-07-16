@@ -769,7 +769,7 @@ function fire() {
     bulletCounter++;
 
     if (bulletCounter == 5) {
-        bulletCounter = 0;
+        //bulletCounter = 0;
         activeGun = false;
     }
 

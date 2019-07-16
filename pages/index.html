@@ -9,22 +9,22 @@
   <body>
     <div class="container">
       <div class="jumbotron">
-        <h1>Bob's Flappy Bird.</h1>
+        <h1>Julian's Flappy Bird.</h1>
         <p>Welcome to the best flappy bird game there is!</p>
       </div>
       <div class="row">
-        <div class="col-md-8">
+        <div class="col-md-12">
           <div id="game"> </div>
         </div>
 
-        <div class="col-md-4">
+        <!-- <div class="col-md-4">
           <p>The highest scorers are:</p>
           <ul id="list">
             <li class="gold">Me</li>
             <li class="score">Myself</li>
             <li class="score">I</li>
           </ul>
-        </div>
+        </div> -->
       </div>
 
       <div class="row">
@@ -38,25 +38,50 @@
           <img src="../assets/screenshotOver.png" class="img-thumbnail img-responsive" />
         </div>
       </div>
+
+      <div class="row">
+      <div id="greeting">
+        <h3>Save your score</h3>
+        <form id="greeting-form" class="form-inline">
+          <div class="form-group">
+            <label for="fullName">What's your name?</label>
+            <input type="text" id="fullName" name="fullName" class="form-control" placeholder="Bob">
+            <label for="email">What's your email?</label>
+            <input type="email" id="email" name="email" class="form-control">
+            <input type="hidden" id="score" name="score" value="0">
+          </div>
+          <button class="btn btn-default" type="submit">OK</button>
+        </form>
+      </div>
+      </div>
+
+      <div class="row">
+        <h3>Saved scores:</h3>
+        <div id="savedScores"></div>
+      </div>
+
+      <div id="credits">Contributors</div>
+
+      <div class="row">
+        <ul>
+          <li class="first second">Hello</li>
+          <li class="second">Hello</li>
+          <li class="third">Hello</li>
+          <li class="fourth">Hello</li>
+        </ul>
+      </div>
+
     </div>
 
-    <div id="greeting">
-      <h3>Save your score</h3>
-      <form id="greeting-form" class="form-inline">
-        <div class="form-group">
-          <label for="fullName">What's your name?</label>
-          <input type="text" id="fullName" name="fullName" class="form-control" placeholder="Bob">
-          <label for="email">What's your email?</label>
-          <input type="email" id="email" name="email" class="form-control">
-          <input type="hidden" id="score" name="score" value="0">
-        </div>
-        <button class="btn btn-default" type="submit">OK</button>
-      </form>
-    </div>
-
-  <script src="../lib/jquery.js"></script>
-  <script src="../lib/phaser.min.js"></script>
-  <script src="../js/flappy.js"></script>
+  <script type="text/javascript" src="../lib/jquery.js"></script>
+  <script type="text/javascript" src="../lib/phaser.min.js"></script>
+  <script type="text/javascript" src="../js/flappy.js"></script>
+  <script type="text/javascript" src="../js/interactivity.js"></script>
 
 </body>
 </html>
+
+<!-- Notes -->
+<!-- * make sure that registerScore function is deactivated in gameOver function-->
+<!-- * make sure that jQuery is active in gameOver function -->
+<!-- * make sure that "greetingForm" jQuery in flappy.js (at top) is active -->

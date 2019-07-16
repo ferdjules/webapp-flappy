@@ -1,5 +1,18 @@
 /* Global Variables & Constants */
 
+// jQuery("#greeting-form").on("submit", function(event_details) {
+//     var greeting = "Hello ";
+//     var name = jQuery("#fullName").val();
+//     var greeting_message = greeting + name;
+//     jQuery("#greeting-form").hide();
+//     // jQuery("#greeting").append("<p>" + greeting_message + " (" +
+//     // jQuery("#email").val() + "): " + jQuery("#score").val() + "</p>");
+//     jQuery("#savedScores").append("<p>" + greeting_message + " (" +
+//     jQuery("#email").val() + "): " + jQuery("#score").val() + "</p>");
+//     event_details.preventDefault();
+//     jQuery("#greeting").hide();
+// });
+
 // the jump velocity of the player - the larger the number the higher it jumps
 var jump_height = 200;
 // the initial height of the player
@@ -69,11 +82,22 @@ var game = new Phaser.Game(game_width, game_height, Phaser.AUTO, 'game', actions
 function preload() {
     // load the images located in the 'assets/' folder and assign names to them (e.g. 'pipe')
     game.load.image('background', '../assets/bg1.jpg');
-    // game.load.image('jamesbond', 'assets/jamesBond.gif');
-    game.load.image('flappybird', '../assets/jamesBond.gif');
-//    game.load.image('flappybird', 'assets/duck.jpg');
+    //game.load.image('jamesbond', 'assets/jamesBond.gif');
+    //game.load.image('flappybird', '../assets/jamesBond.gif');
+    game.load.spritesheet("flappybird", "../assets/mummy.png", 37, 45, 18);
+    // game.load.image('flappybird', 'assets/duck.jpg');
     game.load.image('pipe-body', '../assets/pipe2-body.png');
     game.load.image('pipe-end', '../assets/pipe2-end.png');
+
+
+    // superfluous
+    game.load.image('test','../assets/star.png');
+
+    // loads the image which is used for tiling the background
+    game.load.image('bg', '../assets/comet.png');
+
+    // orb object which floats background
+    game.load.image('batman', '../assets/flappy_batman.png');
 }
 
 /*
@@ -87,9 +111,19 @@ function create() {
     game.stage.backgroundColor = '#98baac';
     game.add.image(0, 0, 'background');
 
+    // tiling
+    var backgroungVelocity = game_speed / 10;
+    var backgroundSprite = game.add.tileSprite(0, 0, game_width, game_height, "bg");
+    backgroundSprite.autoScroll(-backgroungVelocity, 0);
+
     // create a sprite for the player and center on start screen
     player = game.add.sprite(game_width/2, game_height/2, 'flappybird');
     // player = game.add.sprite(player_margin, initial_height, 'jamesbond');
+
+    // superfluous
+    star = game.add.sprite(game_width/2,350,'test');
+    game.add.tween(star).to({angle: -375}, 10000).start();
+    star.anchor.setTo(0.5,0.5);
 
     // rotate the player slightly for uplifting visual effect
     game.add.tween(player).to({angle: -375}, 2000).start();
@@ -109,7 +143,7 @@ function create() {
     pipes = game.add.group();
 
     // initialise the labels for the score, instructions, and game over message
-    label_welcome = game.add.text(game_width/2,game.height/4, "Welcome to CCA Flappy Bird!", big_style);
+    label_welcome = game.add.text(game_width/2,game.height/4, "Welcome to Julian's Flappy Bird!", big_style);
     label_welcome.anchor.set(0.5);
 
     label_score = game.add.text(20, 20, "", big_style);
@@ -135,6 +169,18 @@ function create() {
     space_key.onDown.add(game_play);
     // also allow mouse click and touch input for game play
     game.input.onDown.add(game_play);
+
+    // animates the sprite by giving it a walking ability
+    var walk = player.animations.add('walk');
+    player.animations.play('walk', 30, true);
+
+    // creates a batman sprite and moves it around the screen
+    batman = game.add.sprite(game_width/2, game_height/4, 'batman');
+    game.physics.enable(batman, Phaser.Physics.ARCADE);
+    batman.body.collideWorldBounds = true;
+    batman.body.bounce.setTo(0.8, 0.8, 0.8, 0.8);
+    batman.body.velocity.x = 100;
+    batman.body.velocity.y = 50;
 }
 
 /*
@@ -154,6 +200,13 @@ function game_reset() {
 
     // reset player to initial position on start screen
     player.reset(game_width/2, game_height/2);
+
+
+    // superfluous
+    star = game.add.sprite(500,300,'test');
+    game.add.tween(star).to({angle: -375}, 2000).start();
+    star.anchor.setTo(0.5,0.5);
+
 
     // rotate the player slightly for uplifting visual effect
     game.add.tween(player).to({angle: -375}, 2000).start();
@@ -184,6 +237,9 @@ function game_start() {
 
     // reset the player to its initial position - also resets the physics
     player.reset(player_margin, initial_height);
+
+    // superfluous
+    star.destroy();
 
     // the bigger the number the quicker the player falls
     player.body.gravity.y = gravity;
@@ -349,6 +405,15 @@ function game_over() {
         label_reset.visible = true;
     }
 
+
+    // sets the score input equal to score variable
+    //$("#score").val(score);
+    // shows greeting div
+    //$("#greeting").show();
+    // shows greeting form
+    //$("#greeting-form").show();
+
+    // calls registerScore function defined in interactivity.js
     registerScore(score);
 
 }

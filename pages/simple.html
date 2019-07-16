@@ -2,7 +2,7 @@
 
 <html>
   <head>
-    <title>Flappy Birdy</title>
+    <title>Julian's Flappy Birdy</title>
     <link rel="stylesheet" href="../assets/style.css"/>
     <link rel="stylesheet" href="../lib/bootstrap.css"/>
   </head>
@@ -11,7 +11,7 @@
     <div class="container">
 
       <div class="jumbotron">
-        <h1>Flappy Bird!</h1>
+        <h1>Julian's Flappy Bird!</h1>
         <p>Welcome to Flappy Bird!</p>
       </div>
 
@@ -19,14 +19,14 @@
         <div id="game"></div>
       </div>
 
-      <div class="row">
-        <p>How to play:</p>
+      <!-- <div class="row">
+        <h3>How to play:</h3>
         <ul>
           <li class="gold" id="first">Press SPACE to flap your wings.</li>
           <li class="score" id="second">Avoid the pipes.</li>
           <li class="score" id="third">If you crash, just try again.</li>
         </ul>
-      </div>
+      </div> -->
 
       <!-- <div class="row">
         <button type="button" class="btn btn-default" id="scoresbtn">Scores</button>
@@ -34,11 +34,15 @@
         <button type="button" class="btn btn-default" id="helpbtn">Help</button>
       </div> -->
 
-      <div>
+      <div class="row">
+        <p></p>
+      </div>
+
+      <div class="row">
         <ul class="nav nav-pills">
-          <!-- <li class="nav-item">
-            <a class="nav-link active" id="scoresbtn">Scores</a>
-          </li> -->
+          <li class="nav-item">
+            <a class="nav-link" id="scoresbtn">Scores</a>
+          </li>
           <li class="nav-item">
             <a class="nav-link" id="creditsbtn">Credits</a>
           </li>
@@ -48,14 +52,19 @@
         </ul>
       </div>
 
-      <div>
+      <div class="row">
         <div id="content">
         </div>
       </div>
 
       <div class="row">
-        <p>Scores:</p>
         <div id="scores">
+        </div>
+      </div>
+
+      <div class="row">
+        <div id="noscores">
+          <div>No scores available</div>
         </div>
       </div>
 
@@ -70,13 +79,25 @@
           <img src="../assets/screenshotOver.png" class="img-circle img-responsive"/>
         </div>
       </div>
-    </div>
 
+      <div class="row">
+        <div>
+        <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-show-count="false">Tweet</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+        </div>
+      </div>
+
+    </div>
 
     <script type="text/javascript" src="../lib/phaser.min.js"></script>
     <script type="text/javascript" src="../js/flappy.js"></script>
     <script type="text/javascript" src="../lib/jquery.js"></script>
-    <script type="text/javascript" src="../js/interactivity.js"></script>
+    <script type="text/javascript" src="../js/interactivity_solution.js"></script>
 
   </body>
 </html>
+
+
+<!-- Notes -->
+<!-- * make sure that registerScore function is active in gameOver function-->
+<!-- * make sure that jQuery is deactivated in gameOver function -->
+<!-- * make sure that "greetingForm" jQuery in flappy.js (at top) is deactivated -->
