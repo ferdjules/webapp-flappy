@@ -1,17 +1,17 @@
 /* Global Variables & Constants */
 
-// jQuery("#greeting-form").on("submit", function(event_details) {
-//     var greeting = "Hello ";
-//     var name = jQuery("#fullName").val();
-//     var greeting_message = greeting + name;
-//     jQuery("#greeting-form").hide();
-//     // jQuery("#greeting").append("<p>" + greeting_message + " (" +
-//     // jQuery("#email").val() + "): " + jQuery("#score").val() + "</p>");
-//     jQuery("#savedScores").append("<p>" + greeting_message + " (" +
-//     jQuery("#email").val() + "): " + jQuery("#score").val() + "</p>");
-//     event_details.preventDefault();
-//     jQuery("#greeting").hide();
-// });
+jQuery("#greeting-form").on("submit", function(event_details) {
+    var greeting = "Hello ";
+    var name = jQuery("#fullName").val();
+    var greeting_message = greeting + name;
+    jQuery("#greeting-form").hide();
+    // jQuery("#greeting").append("<p>" + greeting_message + " (" +
+    // jQuery("#email").val() + "): " + jQuery("#score").val() + "</p>");
+    jQuery("#savedScores").append("<p>" + greeting_message + " (" +
+    jQuery("#email").val() + "): " + jQuery("#score").val() + "</p>");
+    event_details.preventDefault();
+    jQuery("#greeting").hide();
+});
 
 // the jump velocity of the player - the larger the number the higher it jumps
 var jump_height = 200;
@@ -407,13 +407,13 @@ function game_over() {
 
 
     // sets the score input equal to score variable
-    //$("#score").val(score);
+    $("#score").val(score);
     // shows greeting div
-    //$("#greeting").show();
+    $("#greeting").show();
     // shows greeting form
-    //$("#greeting-form").show();
+    $("#greeting-form").show();
 
     // calls registerScore function defined in interactivity.js
-    registerScore(score);
+    // registerScore(score);
 
 }
